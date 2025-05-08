@@ -1,0 +1,35 @@
+# Entornos virtuales
+env/
+venv/
+ENV/
+*.env
+
+# Archivos de configuración del sistema
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+.Python
+
+# Archivos de base de datos locales
+*.sqlite3
+
+# Archivos temporales
+*.log
+*.pot
+*.mo
+*.swp
+*~
+.DS_Store
+Thumbs.db
+
+# Archivos y carpetas de Django
+/staticfiles/
+/media/
+
+# Archivos de configuración de IDEs
+.vscode/
+.idea/
+
+# Archivos de entorno
+.env
