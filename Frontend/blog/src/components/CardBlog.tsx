@@ -1,15 +1,14 @@
-function CardBlog() {
+import type { CardInterface } from "../Interfaces/Interfaces";
+const CardBlog: React.FC<CardInterface> = ({ titulo, contenido }) => {
   return (
-    <div className="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
+    <div className="max-w-sm max-h-[20rem] p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
       <a href="#">
         <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-          ¿Que es React?
+          {titulo}
         </h5>
       </a>
       <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-        React no es un framework, es una libreria de javaScript para construir
-        interfaces de usuario. Es una libreria declarativa, efeciente y flexible
-        para construir interfaces de ususarios
+        {contenido}
       </p>
       <a
         href="#"
@@ -25,5 +24,5 @@ function CardBlog() {
       </a>
     </div>
   );
-}
+};
 export default CardBlog;
