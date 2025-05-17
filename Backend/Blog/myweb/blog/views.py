@@ -1,12 +1,16 @@
-from django.shortcuts import render
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
+#generics permite crear vistas genericas
+from rest_framework import generics
 from .serializers import PostSerializer
-# Create your views here.
 from .models import Post
 
-@api_view(['GET']) # Decorador que indica que la vista solo acpeta peticiones GET
-def home(request):
-    posts = Post.objects.all() #Se obtienen todos los objetos de la base de datos
-    serializador= PostSerializer(posts, many= True) # Se serializan los objetos a JSON
-    return Response(serializador.data) #Retrona la respuesta en formato JSON
+# Se crea una clase gererica que hereda de LstCreateAPIView
+#LsitCreateAPIView permite listar y crear objetos
+class ListarTodo(generics.ListCreateAPIView):
+    queryset = Post.objects.all() 
+    serializer_class= PostSerializer 
+
+# Se crea una clase gererica que hereda de RetrieveUpdateDestroyAPIView
+# que permite boterner, actualizar y eliminar objetos a através de un campo especifico
+class ObtenerActualizarBorrar(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer

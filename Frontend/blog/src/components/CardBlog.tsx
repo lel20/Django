@@ -1,27 +1,83 @@
 import type { CardInterface } from "../Interfaces/Interfaces";
-const CardBlog: React.FC<CardInterface> = ({ titulo, contenido }) => {
+import { useState } from "react";
+interface Props {
+  post: CardInterface;
+  onUpdate: (updatedPost: CardInterface) => void;
+}
+const CardBlog: React.FC<Props> = ({ post, onUpdate }) => {
+  const [editandoTitulo, setEditandoTitulo] = useState(false);
+  const [editandoContenido, setEditandoContenido] = useState(false);
+  const [titulo, setTitulo] = useState(post.titulo);
+  const [contenido, setContenido] = useState(post.contenido);
+  const [actualizando, setActualizando] = useState(false);
+  const actualizarPost = async () => {
+    setActualizando(true);
+    try {
+      const res = await fetch(`http://127.0.0.1:8000/${post.id}/`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ titulo, contenido }),
+      });
+      if (!res.ok) throw new Error("Error al actualizar");
+      const data = await res.json();
+      onUpdate(data);
+      setEditandoTitulo(false);
+      setEditandoContenido(false);
+    } catch (error) {
+      alert("Error al actualizar");
+      // Opcional: revertir cambios locales si quieres
+      setTitulo(post.titulo);
+      setContenido(post.contenido);
+    } finally {
+      setActualizando(false);
+    }
+  };
+
   return (
-    <div className="max-w-sm max-h-[20rem] p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
-      <a href="#">
-        <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+    <div className="w-[30rem] h-[20rem]  p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 mb-4">
+      {editandoTitulo ? (
+        <input
+          autoFocus
+          className="w-full text-2xl font-bold mb-2 border-none bg-transparent outline-none text-white"
+          value={titulo}
+          onChange={(e) => setTitulo(e.target.value)}
+          onBlur={() => setEditandoTitulo(false)}
+        />
+      ) : (
+        <h5
+          onDoubleClick={() => setEditandoTitulo(true)}
+          className="mb-2 text-2xl font-bold cursor-pointer"
+          title="Doble clic para editar"
+        >
           {titulo}
         </h5>
-      </a>
-      <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-        {contenido}
-      </p>
-      <a
-        href="#"
-        className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+      )}
+
+      {editandoContenido ? (
+        <textarea
+          autoFocus
+          className="w-full mb-3 h-auto min-h-[100px] overflow-hidden text-gray-700 dark:text-gray-300 border-none outline-none resize-none bg-transparent"
+          value={contenido}
+          onChange={(e) => setContenido(e.target.value)}
+          onBlur={() => setEditandoContenido(false)}
+        />
+      ) : (
+        <p
+          onDoubleClick={() => setEditandoContenido(true)}
+          className="mb-3 cursor-pointer"
+          title="Doble clic para editar"
+        >
+          {contenido}
+        </p>
+      )}
+
+      <button
+        onClick={actualizarPost}
+        disabled={actualizando}
+        className="mr-2 px-3 py-2 text-white bg-blue-700 rounded hover:bg-blue-800 disabled:opacity-50"
       >
-        Actualizar
-      </a>
-      <a
-        href="#"
-        className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-      >
-        Borrar
-      </a>
+        {actualizando ? "Actualizando..." : "Actualizar"}
+      </button>
     </div>
   );
 };
