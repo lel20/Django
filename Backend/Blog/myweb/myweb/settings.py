@@ -1,4 +1,4 @@
-
+from corsheaders.defaults import default_headers
 from pathlib import Path
 from decouple import config
 
@@ -19,10 +19,12 @@ ALLOWED_HOSTS = []
 
 CORS_ALLOW_ALL_ORIGINS = True
 # Application definition
-'''CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000',  # Cambia este valor por tu dominio de frontend
-]'''
-
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",  # Cambia este valor por tu dominio de frontend
+]
+CORS_ALLOW_HEADERS = list(default_headers) + [
+    'content-type',
+]
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -44,6 +46,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
 
 ROOT_URLCONF = 'myweb.urls'

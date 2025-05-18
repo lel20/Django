@@ -1,44 +1,42 @@
-import type { CardInterface } from "../Interfaces/Interfaces";
 import { useState } from "react";
+import type { CardInterface } from "../../Interfaces/Interfaces";
+import { useUpdatePost } from "../../hooks/updateCardBlog";
+import { BotonEliminar } from "../buttons/BotonEliminar";
 interface Props {
   post: CardInterface;
   onUpdate: (updatedPost: CardInterface) => void;
+  onDelete: (id: number) => void;
 }
-const CardBlog: React.FC<Props> = ({ post, onUpdate }) => {
+
+const CardBlog: React.FC<Props> = ({ post, onUpdate, onDelete }) => {
   const [editandoTitulo, setEditandoTitulo] = useState(false);
   const [editandoContenido, setEditandoContenido] = useState(false);
+
   const [titulo, setTitulo] = useState(post.titulo);
   const [contenido, setContenido] = useState(post.contenido);
-  const [actualizando, setActualizando] = useState(false);
-  const actualizarPost = async () => {
-    setActualizando(true);
-    try {
-      const res = await fetch(`http://127.0.0.1:8000/${post.id}/`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ titulo, contenido }),
-      });
-      if (!res.ok) throw new Error("Error al actualizar");
-      const data = await res.json();
-      onUpdate(data);
+
+  const { actualizarPost, actualizando } = useUpdatePost(
+    post.id,
+    titulo,
+    contenido,
+    onUpdate,
+    () => {
       setEditandoTitulo(false);
       setEditandoContenido(false);
-    } catch (error) {
-      alert("Error al actualizar");
-      // Opcional: revertir cambios locales si quieres
+    },
+    () => {
       setTitulo(post.titulo);
       setContenido(post.contenido);
-    } finally {
-      setActualizando(false);
     }
-  };
+  );
 
   return (
-    <div className="w-[30rem] h-[20rem]  p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 mb-4">
+    <div className="w-[30rem] h-[20rem] relative p-6 bg-white border border-gray-200 rounded-lg shadow-sm  dark:border-gray-700 mb-4">
+      <BotonEliminar id={post.id} onEliminado={onDelete} />
       {editandoTitulo ? (
         <input
           autoFocus
-          className="w-full text-2xl font-bold mb-2 border-none bg-transparent outline-none text-white"
+          className="w-full text-2xl font-bold mb-2 border-none bg-transparent outline-none"
           value={titulo}
           onChange={(e) => setTitulo(e.target.value)}
           onBlur={() => setEditandoTitulo(false)}

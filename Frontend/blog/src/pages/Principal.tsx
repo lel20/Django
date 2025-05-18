@@ -1,41 +1,40 @@
-import CardBlog from "../components/CardBlog";
+import CardBlog from "../components/cardBlog/CardBlog";
 import "./PagesCss/Principal.css";
 import { useEffect, useState } from "react";
+import { llamarApi } from "../services/api";
 // Definimos la interfaz para el tipo de dato que se van a reccibir
 import type { CardInterface } from "../Interfaces/Interfaces";
 function Principal() {
   const [blog, setBlog] = useState<CardInterface[]>([]);
-  const apiUrl = "http://127.0.0.1:8000/";
-  // llamrApi es una funcion asincrona que se encarga de llamar a la Api y obtener los datos
-  const llamarApi = async () => {
-    try {
-      const response = await fetch(apiUrl);
-      if (!response.ok) {
-        throw new Error("Error en la respuesta de la API");
-      }
-      const data = await response.json();
-      // console.log(data);
-      setBlog(data);
-    } catch (error) {
-      console.error("Error al llamar a la API:", error);
-    }
-  };
-  //se encarga de llamar a la funcion llamarApi despues de que se
-  //renderice el componente por primera vez
+
   useEffect(() => {
-    llamarApi();
+    const apiFetch = async () => {
+      const data = await llamarApi();
+      setBlog(data);
+    };
+    apiFetch();
   }, []);
-  //actualizar los datos de la api. recibe un objeto de tipo CardInterface
+  // Actualiamos los datos de la api
   const actualizarPost = (updatedPost: CardInterface) => {
     setBlog((blogPosts) =>
       blogPosts.map((item) => (item.id === updatedPost.id ? updatedPost : item))
     );
   };
+  // Eliminar los datos de la Api
+  const eliminarPost = (id: number) => {
+    //Llamos a la api para eliinar los datos
+    setBlog((blogPost) => blogPost.filter((item) => item.id !== id));
+  };
   return (
     <>
       <div className="principal gap-4">
         {blog.map((item) => (
-          <CardBlog key={item.id} post={item} onUpdate={actualizarPost} />
+          <CardBlog
+            key={item.id}
+            post={item}
+            onUpdate={actualizarPost}
+            onDelete={eliminarPost}
+          />
         ))}
       </div>
     </>
