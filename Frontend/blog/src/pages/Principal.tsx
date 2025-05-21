@@ -1,5 +1,4 @@
 import CardBlog from "../components/cardBlog/CardBlog";
-import "./PagesCss/Principal.css";
 import { useEffect, useState } from "react";
 import { llamarApi } from "../services/api";
 // Definimos la interfaz para el tipo de dato que se van a reccibir
@@ -22,12 +21,12 @@ function Principal() {
   };
   // Eliminar los datos de la Api
   const eliminarPost = (id: number) => {
-    //Llamos a la api para eliinar los datos
+    //Llamos a la api para eliminar los datos
     setBlog((blogPost) => blogPost.filter((item) => item.id !== id));
   };
   return (
     <>
-      <div className="principal gap-4">
+      <div className="container flex flex-wrap justify-center pt-4  items-center  w-full gap-8 min-h-40 ">
         {blog.map((item) => (
           <CardBlog
             key={item.id}
