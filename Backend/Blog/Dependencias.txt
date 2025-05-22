@@ -3,7 +3,7 @@ pip instal django
 pip install mysqlclient   --------------para conecta con mysql
 pip install djangorestframework  ------- para covertri mi proyecto en una api y pueda ser consumida
 pip install django-cors-headers  -------  para permitir que tu frontend se comunique con tu API Django
-
+pip install -U drf-yasg ----------------- para la documentacion
 
 
 middleware[

@@ -1,6 +1,9 @@
 //Url global de la API
 export const apiUrl = import.meta.env.VITE_API_URL;
-
+interface CrearDatos {
+  titulo: string;
+  contenido: string;
+}
 //funcion para obtener los datos de la API
 
 //Consumir la API
@@ -38,5 +41,25 @@ export const eliminaDatosApi = async (id: number) => {
     return true;
   } catch (error) {
     console.error("Error al eliminar los datos de la API", error);
+  }
+};
+
+export const crearDatosApi = async (formularioData: CrearDatos) => {
+  try {
+    const data = await fetch(apiUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formularioData),
+    });
+    if (!data) {
+      throw new Error("Error al guarda los datos");
+    }
+    const res = await data.json();
+    alert("datos creados");
+    return res;
+  } catch (error) {
+    console.error("Error al guardar", error);
   }
 };

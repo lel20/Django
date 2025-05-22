@@ -1,0 +1,208 @@
+{
+"swagger": "2.0",
+"info": {
+"title": "Documentación",
+"description": "Documentación automática del proyecto",
+"termsOfService": "https://www.google.com/policies/terms/",
+"contact": {
+"email": "leonardoparedes.v.r@gmail.com"
+},
+"license": {
+"name": "BSD License"
+},
+"version": "v1"
+},
+"host": "192.168.18.2:8000",
+"schemes": [
+"http"
+],
+"basePath": "/",
+"consumes": [
+"application/json"
+],
+"produces": [
+"application/json"
+],
+"securityDefinitions": {
+"Basic": {
+"type": "basic"
+}
+},
+"security": [
+{
+"Basic": []
+}
+],
+"paths": {
+"/": {
+"get": {
+"operationId": "_list",
+"description": "",
+"parameters": [],
+"responses": {
+"200": {
+"description": "",
+"schema": {
+"type": "array",
+"items": {
+"$ref": "#/definitions/Post"
+}
+}
+}
+},
+"tags": [
+""
+]
+},
+"post": {
+"operationId": "_create",
+"description": "",
+"parameters": [
+{
+"name": "data",
+"in": "body",
+"required": true,
+"schema": {
+"$ref": "#/definitions/Post"
+}
+}
+],
+"responses": {
+"201": {
+"description": "",
+"schema": {
+"$ref": "#/definitions/Post"
+}
+}
+},
+"tags": [
+""
+]
+},
+"parameters": []
+},
+"/{id}/": {
+"get": {
+"operationId": "read",
+"description": "",
+"parameters": [],
+"responses": {
+"200": {
+"description": "",
+"schema": {
+"$ref": "#/definitions/Post"
+}
+}
+},
+"tags": [
+"read"
+]
+},
+"put": {
+"operationId": "update",
+"description": "",
+"parameters": [
+{
+"name": "data",
+"in": "body",
+"required": true,
+"schema": {
+"$ref": "#/definitions/Post"
+}
+}
+],
+"responses": {
+"200": {
+"description": "",
+"schema": {
+"$ref": "#/definitions/Post"
+}
+}
+},
+"tags": [
+"update"
+]
+},
+"patch": {
+"operationId": "partial_update",
+"description": "",
+"parameters": [
+{
+"name": "data",
+"in": "body",
+"required": true,
+"schema": {
+"$ref": "#/definitions/Post"
+}
+}
+],
+"responses": {
+"200": {
+"description": "",
+"schema": {
+"$ref": "#/definitions/Post"
+}
+}
+},
+"tags": [
+"partial_update"
+]
+},
+"delete": {
+"operationId": "delete",
+"description": "",
+"parameters": [],
+"responses": {
+"204": {
+"description": ""
+}
+},
+"tags": [
+"delete"
+]
+},
+"parameters": [
+{
+"name": "id",
+"in": "path",
+"description": "A unique integer value identifying this post.",
+"required": true,
+"type": "integer"
+}
+]
+}
+},
+"definitions": {
+"Post": {
+"required": [
+"titulo",
+"contenido"
+],
+"type": "object",
+"properties": {
+"id": {
+"title": "ID",
+"type": "integer",
+"readOnly": true
+},
+"titulo": {
+"title": "Titulo",
+"type": "string",
+"maxLength": 100,
+"minLength": 1
+},
+"contenido": {
+"title": "Contenido",
+"type": "string",
+"minLength": 1
+},
+"fecha_creacion": {
+"title": "Fecha creacion",
+"type": "string",
+"format": "date-time",
+"readOnly": true
+}
+}
+}
+}
+}
